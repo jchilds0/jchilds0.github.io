@@ -93,9 +93,7 @@ I_n &=  \frac{-i}{2^{2n}} J_n \\
 \end{align}
 The first fraction can be rewritten as $(2n-1)!!$ where !! represents the double factorial, the product of all odd numbers up to $2n-1$. The $2^n$ term halves all of the even numbers in the $(2n)!$ term to give $n!$ which is then cancelled out by the $n!$ in the denominator and we are left with all of the odd numbers up to $2n$ or more precisely $2n-1$. \newline
 The second fraction becomes $(2n)!!$, the product of all even numbers up to $2n$ as we multiple each term in $n!$ by 2.
-\begin{equation}
-\Rightarrow I_n = 2 \pi \frac{(2n-1)!!}{(2n)!!}
-\end{equation}
-\begin{equation}
-= 2 \pi \frac{1 \cdot 3 \cdot 5 \cdot \cdot \cdot (2n -1)}{2 \cdot 4 \cdot 6 \cdot \cdot \cdot (2n)} \text{ } \QED
-\end{equation}
+\begin{align}
+\Rightarrow I_n &= 2 \pi \frac{(2n-1)!!}{(2n)!!} \\
+&= 2 \pi \frac{1 \cdot 3 \cdot 5 \cdot \cdot \cdot (2n -1)}{2 \cdot 4 \cdot 6 \cdot \cdot \cdot (2n)} \text{ }
+\end{align}
