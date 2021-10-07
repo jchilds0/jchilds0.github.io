@@ -63,4 +63,4 @@ the odd numbers up to $2n$ or more precisely $2n-1$. The second fraction
 becomes $(2n)!!$, the product of all even numbers up to $2n$ as we
 multiple each term in $n!$ by 2.
 $$\Rightarrow I_n = 2 \pi \frac{(2n-1)!!}{(2n)!!}$$
-$$= 2 \pi \frac{1 \cdot 3 \cdot 5 \cdot \cdot \cdot (2n -1)}{2 \cdot 4 \cdot 6 \cdot \cdot \cdot (2n)} \text{ } \null\nobreak\hfill\ensuremath{\blacksquare}$$
+$$= 2 \pi \frac{1 \cdot 3 \cdot 5 \cdot \cdot \cdot (2n -1)}{2 \cdot 4 \cdot 6 \cdot \cdot \cdot (2n)} \text{ }$$
