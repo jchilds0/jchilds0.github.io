@@ -7,10 +7,10 @@ math: true
 comments: false
 ---
 Let $n \in \mathbb{N}$. Prove that
-\[ I_n := \int_0^{2\pi} \cos^{2n} (\theta) d\theta = 2 \pi \frac{1 \cdot 3 \cdot 5 \cdot \cdot \cdot (2n -1)}{2 \cdot 4 \cdot 6 \cdot \cdot \cdot (2n)}\]
-(a) Relate $I_n$ to the following integral
-\[ J_n := \int_{\{|z| = 1\}} \bigg( z + \frac{1}{z} \bigg)^{2n} \frac{dz}{z}\]
-\textbf{Solution} Using Euler's Identity $e^{i \theta} = \cos(\theta) + i\sin(\theta)$ we can rewrite $\cos(\theta)$,
+\[ I_n := \int_0^{2\pi} \cos^{2n} (\theta) d\theta = 2 \pi \frac{1 \cdot 3 \cdot 5 \cdot \cdot \cdot (2n -1)}{2 \cdot 4 \cdot 6 \cdot \cdot \cdot (2n)} \]
+(a) Relate $$I_n$$ to the following integral
+\[ J_n := \int_{\{|z| = 1\}} \bigg( z + \frac{1}{z} \bigg)^{2n} \frac{dz}{z} \]
+\textbf{Solution} Using Euler's Identity $$e^{i \theta} = \cos(\theta) + i\sin(\theta)$$ we can rewrite $$\cos(\theta)$$,
 \[ \cos(\theta) = \frac{e^{i\theta} + e^{-i\theta}}{2}\]
 \[ I_n = \int_0^{2\pi} \bigg(\frac{e^{i\theta} + e^{-i\theta}}{2} \bigg)^{2n} d\theta\]
 making the substitution $z = e^{i \theta}$ to the integral $I_n$, the interval 0 to $2\pi$ becomes the unit circle,
