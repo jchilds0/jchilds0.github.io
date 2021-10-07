@@ -6,7 +6,7 @@ tags: [Euler]     # TAG names should always be lowercase
 math: true
 comments: false
 ---
-Let $n \in \mathbb{N}$. Prove that
+Let $$n \in \mathbb{N}$$. Prove that
 \begin{equation}
 I_n := \int_0^{2\pi} \cos^{2n} (\theta) d\theta = 2 \pi \frac{1 \cdot 3 \cdot 5 \cdot \cdot \cdot (2n -1)}{2 \cdot 4 \cdot 6 \cdot \cdot \cdot (2n)}
 \end{equation}
