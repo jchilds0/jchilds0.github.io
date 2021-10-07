@@ -1,11 +1,3 @@
----
-title: Euler Identity
-date: 2021-10-07
-categories: [Complex Analysis]
-tags: [Euler]     # TAG names should always be lowercase
-math: true
-comments: false
----
 Let $n \in \mathbb{N}$. Prove that
 $$I_n := \int_0^{2\pi} \cos^{2n} (\theta) d\theta = 2 \pi \frac{1 \cdot 3 \cdot 5 \cdot \cdot \cdot (2n -1)}{2 \cdot 4 \cdot 6 \cdot \cdot \cdot (2n)}$$
 Let
@@ -52,8 +44,8 @@ $f^{(2n)}(0)$ gives, $$f^{(2n)}(0) = \bigg( \frac{(2n)!}{n!} \bigg)^2$$
 Therefore, $$J_n = \frac{2\pi i (2n)!}{(n!)^2}$$ Substituting $J_n$ into
 Equation (4.1), $$\begin{aligned}
 I_n &=  \frac{-i}{2^{2n}} J_n \\
-&= 2 \pi \frac{(2n)!}{2^{2n}(n!)^2} \\
-&= 2 \pi \frac{(2n)!}{2^nn!} \frac{1}{2^nn!} \end{aligned}$$ The
+    &= 2 \pi \frac{(2n)!}{2^{2n}(n!)^2} \\
+    &= 2 \pi \frac{(2n)!}{2^nn!} \frac{1}{2^nn!} \end{aligned}$$ The
 first fraction can be rewritten as $(2n-1)!!$ where !! represents the
 double factorial, the product of all odd numbers up to $2n-1$. The $2^n$
 term halves all of the even numbers in the $(2n)!$ term to give $n!$
@@ -63,4 +55,3 @@ The second fraction becomes $(2n)!!$, the product of all even numbers up
 to $2n$ as we multiple each term in $n!$ by 2.
 $$\Rightarrow I_n = 2 \pi \frac{(2n-1)!!}{(2n)!!}$$
 $$= 2 \pi \frac{1 \cdot 3 \cdot 5 \cdot \cdot \cdot (2n -1)}{2 \cdot 4 \cdot 6 \cdot \cdot \cdot (2n)} \text{ } \null\nobreak\hfill\ensuremath{\blacksquare}$$
-
