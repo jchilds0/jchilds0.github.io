@@ -6,6 +6,8 @@ tags: [primes]     # TAG names should always be lowercase
 math: true
 comments: false
 ---
+The Pollard $\rho$ algorithm allows us...
+
 The Pollard $\rho$ implementation in Python is as follows,
 ```python
 def pollard_rho(n: int) -> int:
