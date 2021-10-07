@@ -46,7 +46,7 @@ social:
     - https://github.com/jchilds0       # change to your github homepage
     # Uncomment below to add more social links
     # - https://www.facebook.com/username
-    https://www.linkedin.com/in/joshua-childs-7a481221b
+    - https://www.linkedin.com/in/joshua-childs-7a481221b
 
 google_site_verification: google_meta_tag_verification # change to your verification string
 
