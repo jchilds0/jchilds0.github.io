@@ -24,9 +24,9 @@ I_n =  \frac{-i}{2^{2n}} J_n
 \int_{\{|z| = 1\}} \frac{f(z)}{(z-z_0)^{2n+1}} dz
 \end{equation}
 \textbf{Solution}
-\[ J_n = \int_{\{|z| = 1\}} \bigg( z + \frac{1}{z} \bigg)^{2n} \frac{dz}{z}\]
-\[ = \int_{\{|z| = 1\}} \frac{(z^2 + 1)^{2n}}{z^{2n}} \frac{dz}{z}\]
-\[ = \int_{\{|z| = 1\}} \frac{(z^2 + 1)^{2n}}{z^{2n+1}} dz\]
+\[ J_n = \int_{\{|z| = 1\}} \bigg( z + \frac{1}{z} \bigg)^{2n} \frac{dz}{z} \]
+\[ = \int_{\{|z| = 1\}} \frac{(z^2 + 1)^{2n}}{z^{2n}} \frac{dz}{z} \]
+\[ = \int_{\{|z| = 1\}} \frac{(z^2 + 1)^{2n}}{z^{2n+1}} dz \]
 Therefore $z_0 = 0$ and $f(z) = (z^2+1)^{2n}$ \newline \newline
 (c) Using the Cauchy Integral Formula, show that
 \begin{equation}
@@ -48,11 +48,11 @@ To substitute into Equation (4.3), we need to differentiate $f(z)$ $2n$ times, a
 Differentiating the expresion above $2n$ times and substituting into $f^{(2n)}(0)$ gives,
 \[ f^{(2n)}(0) = \bigg( \frac{(2n)!}{n!} \bigg)^2\]
 Therefore,
-\[ J_n = \frac{2\pi i (2n)!}{(n!)^2}\]
+\[ J_n = \frac{2\pi i (2n)!}{(n!)^2} \]
 Substituting $J_n$ into Equation (4.1),
-\[ I_n =  \frac{-i}{2^{2n}} J_n\]
-\[ = 2 \pi \frac{(2n)!}{2^{2n}(n!)^2}\]
-\[ = 2 \pi \frac{(2n)!}{2^nn!} \frac{1}{2^nn!}\]
+\[ I_n =  \frac{-i}{2^{2n}} J_n \]
+\[ = 2 \pi \frac{(2n)!}{2^{2n}(n!)^2} \]
+\[ = 2 \pi \frac{(2n)!}{2^nn!} \frac{1}{2^nn!} \]
 The first fraction can be rewritten as $(2n-1)!!$ where !! represents the double factorial, the product of all odd numbers up to $2n-1$. The $2^n$ term halves all of the even numbers in the $(2n)!$ term to give $n!$ which is then cancelled out by the $n!$ in the denominator and we are left with all of the odd numbers up to $2n$ or more precisely $2n-1$. \newline
 The second fraction becomes $(2n)!!$, the product of all even numbers up to $2n$ as we multiple each term in $n!$ by 2.
 \[ \Rightarrow I_n = 2 \pi \frac{(2n-1)!!}{(2n)!!} \]
