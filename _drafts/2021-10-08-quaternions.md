@@ -9,4 +9,6 @@ comments: false
 
 Quaternion Calculator
 
-{% include quat.html %}
+![Example 1](/assets/assign2.PNG)
+
+![Example 2](/assets/assign2.2.PNG)
