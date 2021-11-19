@@ -1,7 +1,7 @@
 ---
 title: Cathedral Ranges
 date: 2021-11-19 15:00
-categories: [Photography, Australian International Airshow 2019]
+categories: [Photography]
 tags: []     # TAG names should always be lowercase
 math: true
 comments: false
