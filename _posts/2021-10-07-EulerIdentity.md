@@ -5,6 +5,7 @@ categories: [Complex Analysis]
 tags: [euler, contour]     # TAG names should always be lowercase
 math: true
 comments: false
+pin: true
 ---
 Let $n \in \mathbb{N}$.
 

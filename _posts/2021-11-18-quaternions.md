@@ -5,6 +5,7 @@ categories: [Language Theory]
 tags: [regular languages, context free languages, quaternions]
 math: true
 comments: false
+pin: true
 ---
 
 **Introduction**
