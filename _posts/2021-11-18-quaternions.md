@@ -5,7 +5,6 @@ categories: [Language Theory]
 tags: [regular languages, context free languages, quaternions]
 math: true
 comments: false
-pin: true
 ---
 
 **Introduction**
@@ -333,4 +332,4 @@ expr     :    LOG '(' expr ')' {  $$ = QuatLog($3);  }
 
 If you would like to try out the calculator, an exe is available here [quat]
 
-[quat]:{{ https://jchilds0.github.io/ }}/assets/quat.exe
+[quat]:{{ https://jchilds0.github.io }}/assets/quat.exe
