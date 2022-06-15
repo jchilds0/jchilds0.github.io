@@ -13,16 +13,23 @@ comments: false
 # Classification
 
 To motivate our classification, we examine the fixed points of a Möbius transformation. Let $\varphi$ be a Möbius
-transformation with coefficients given by $A = \begin{pmatrix}  a & b \\ c & d \end{pmatrix} \in \text{PSL}(2, \mathbb{R})$. A
-fixed point of $\varphi$ is a point $z \in \mathbb{C}$ such that $\varphi(z) = z$, thus
+transformation with coefficients given by
+
+$$A = \begin{pmatrix}  a & b \\ c & d \end{pmatrix} \in \text{PSL}(2, \mathbb{R})$$
+
+A fixed point of $\varphi$ is a point $z \in \mathbb{C}$ such that $\varphi(z) = z$, thus
 
 $$\begin{aligned}
 z &= \frac{az + b}{cz + d} \\
 z(cz + d) &= az + b \\
-0 &= cz^2 + (d - a) z - b\end{aligned}$$ $$\begin{aligned}
+0 &= cz^2 + (d - a) z - b
+\end{aligned}$$
+
+$$\begin{aligned}
 \Delta &= (a - d)^2 + 4bc \\
 &= (a - d)^2 + 4(ad - 1) \\
-&= (a + d)^2 - 4\end{aligned}$$
+&= (a + d)^2 - 4
+\end{aligned}$$
 
 Thus since $a, d$ are real, we get two real fixed points when
 $(a + d)^2 > 4$, one fixed point when $(a + d)^2 = 4$ and two complex
