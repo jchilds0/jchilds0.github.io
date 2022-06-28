@@ -1,6 +1,6 @@
 ---
 title: Quaternion Calculator
-date: 2021-11-18 21:30
+date: 2022-01-18 21:30
 categories: [Language Theory]
 tags: [regular languages, context free languages, quaternions]
 math: true
