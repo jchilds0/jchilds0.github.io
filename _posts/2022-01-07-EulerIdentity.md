@@ -1,11 +1,10 @@
 ---
 title: Integral of Even Powers of Cosine
-date: 2021-10-07 15:00
+date: 2022-01-07 15:00
 categories: [Complex Analysis]
 tags: [euler, contour]     # TAG names should always be lowercase
 math: true
 comments: false
-pin: true
 ---
 Let $n \in \mathbb{N}$.
 
