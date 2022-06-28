@@ -332,4 +332,4 @@ expr     :    LOG '(' expr ')' {  $$ = QuatLog($3);  }
 
 If you would like to try out the calculator, an exe is available here [Quat]
 
-[Quat]: https://github.com/jchilds0/jchilds0.github.io/releases/download/Quat/quat.exe
+[Quat]: https://github.com/jchilds0/jchilds0.github.io/releases/tag/Quat
