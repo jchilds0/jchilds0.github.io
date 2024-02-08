@@ -10,7 +10,7 @@ comments: false
 The aim of this project is to develop a flight simulator controlled using torsion and curvature.
 It is built in python using the panda3D graphics library.
 
-<img src="/assets/flight-sim/image.PNG">
+<img src="/assets/flight-sim/image.PNG" alt="Flight Simulator">
 
 ## Download
 

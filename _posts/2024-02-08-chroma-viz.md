@@ -13,9 +13,9 @@ The aim of this project is to develop a collection of applications which can ren
 Inspiration is taken from the VizRT suite of applications.
 Currently this collections consists of [Chroma Viz](https://github.com/jchilds0/chroma-viz), [Chroma Engine](https://github.com/jchilds0/chroma-engine), and [Chroma Hub](https://github.com/jchilds0/chroma-hub) with the source code for each available on GitHub.
 
-<img src="/assets/chroma-viz.png">
+<img src="/assets/chroma-viz.png" alt="Chroma Viz">
 
-<img src="/assets/chroma-engine.png">
+<img src="/assets/chroma-engine.png" alt="Chroma Engine">
 
 **Chroma Viz**
 
