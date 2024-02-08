@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "jekyll-theme-chirpy", "~> 4.1", ">= 4.1.1"
+gem "jekyll-theme-chirpy", "~> 6.4"
 
 group :jekyll_plugins do
   # If you have any plugins, put them here!
@@ -24,3 +24,5 @@ gem "wdm", "~> 0.1.1", :install_if => Gem.win_platform?
 gem 'rogue'
 
 gem "webrick", "~> 1.7"
+
+gem "json"
