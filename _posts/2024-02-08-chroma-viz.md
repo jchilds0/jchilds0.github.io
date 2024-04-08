@@ -14,7 +14,7 @@ Inspiration is taken from the VizRT suite of applications.
 Currently this collections consists of [Chroma Viz](https://github.com/jchilds0/chroma-viz), [Chroma Engine](https://github.com/jchilds0/chroma-engine), [Chroma Hub](https://github.com/jchilds0/chroma-viz), and [Chroma Artist](https://github.com/jchilds0/chroma-viz), with the source code for each available on GitHub.
 
 <video width="720" controls>
-    <source src="/assets/chroma-graphics/demo.mp4">
+    <source src="https://github.com/jchilds0/chroma-viz/raw/main/data/demo.mp4">
 </video>
 
 ### **Chroma Viz**
