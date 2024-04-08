@@ -11,7 +11,10 @@ comments: false
 
 The aim of this project is to develop a collection of applications which can render custom graphics.
 Inspiration is taken from the VizRT suite of applications.
-Currently this collections consists of [Chroma Viz](https://github.com/jchilds0/chroma-viz), [Chroma Engine](https://github.com/jchilds0/chroma-engine), [Chroma Hub](https://github.com/jchilds0/chroma-viz), and [Chroma Artist](https://github.com/jchilds0/chroma-viz), with the source code for each available on GitHub.
+Currently this collections consists of Chroma Viz, Hub, Engine and Artist.
+Chroma Viz, Hub and Artist are built in Golang and are contained in the [Chroma Viz](https://github.com/jchilds0/chroma-viz) repo on github.
+They share a common base library with a separate package for each application and a single main file to launch any of the applications.
+Chroma Engine is built in C and is contained in the [Chroma Engine](https://github.com/jchilds0/chroma-engine) repo.
 
 <video width="720" controls>
     <source src="https://github.com/jchilds0/chroma-viz/raw/main/data/demo.mp4">
@@ -74,6 +77,12 @@ Chroma Hub first send 4 bytes with the length of the image, followed by the imag
 Then we store this data for later use, as well as decoding the png to extract the pixel data using libpng.
 In later render calls, if the image id matches the currently stored image id, we reuse this file instead of requesting the image again from Chroma Hub.
 
+After receiving the graphics request and any image assets, Chroma Engine calculates the absolute position of each geometry in the page using the parent tree and relative positions.
+Next the animations are calculated.
+Currently this is a simple black rectangle which is the same size as the background rectangle and is resized to create the animation effect.
+For smooth animations, we use a bezier curve to control the animation timing.
+Finally each geometry in the page is rendered to the screen using OpenGL.
+
 <img src="/assets/chroma-graphics/chroma-engine.png" alt="Chroma Engine">
 
 ### **Chroma Hub**
@@ -95,13 +104,13 @@ Chroma Viz and Chroma Engine can set the Chroma Hub address individually and con
 Chroma Hub encodes the templates using a json-like format, which is restricted to simplify implementation on the Chroma Engine/Chroma Viz side.
 The format is described by the following Context Free Grammar (see Quaternion Calculator for a description of CFGs).
 
-$$ \begin{align}
+$$ \begin{align*}
 S &\to \{ \texttt{N, 'templates': [$T$]} \} \\
 T &\to \{ \texttt{N, 'geometry': [$G$]} \} \mid T, T \\
 G &\to \{ \texttt{N, 'attr': [$A$]} \} \mid G, G \\
 A &\to \{ \texttt{N} \} \mid A, A \\
 N &\to \texttt{'string1'}: \texttt{'string2'} \mid \texttt{'string1'}: \texttt{num} \mid N, N
-\end{align}$$
+\end{align*}$$
 
 where $ \texttt{string1} $ and $ \texttt{string2} $ are strings and $ \texttt{num} $ is an integer or float.
 The non-terminals $ T, G, A $ represent a templates, geometries, and attributes respectively.
