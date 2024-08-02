@@ -10,7 +10,7 @@ comments: false
 ### **Introduction**
 
 The aim of this project is to implement a SAT solver in Haskell which uses conflict driven clause learning.
-The solver is based on [MiniSAT](http://minisat.se/MiniSat.html).
+The solver is based on [MiniSAT](http://minisat.se/MiniSat).
 
 ### **Preliminaries**
 
