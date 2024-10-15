@@ -11,10 +11,10 @@ comments: false
 
 The aim of this project is to develop a collection of applications which can render custom graphics.
 Inspiration is taken from the VizRT suite of applications.
-Currently this collections consists of Chroma Viz, Hub, Engine and Artist.
-Chroma Viz, Hub and Artist are built in Golang and are contained in the [Chroma Viz](https://github.com/jchilds0/chroma-viz) repo on github.
-They share a common base library with a separate package for each application and a single main file to launch any of the applications.
-Chroma Engine is built in C and is contained in the [Chroma Engine](https://github.com/jchilds0/chroma-engine) repo.
+Currently this collection consists of Chroma Viz, Hub, Engine and Artist.
+Chroma Viz, Hub and Artist are built in Golang and are contained in the [Chroma Viz](https://github.com/jchilds0/chroma-viz) repository on Github.
+They share a common base library with a separate package for each application.
+Chroma Engine is built in C and is contained in the [Chroma Engine](https://github.com/jchilds0/chroma-engine) repository.
 
 <video width="720" controls>
     <source src="https://github.com/jchilds0/chroma-viz/raw/main/data/demo.mp4">
@@ -22,33 +22,26 @@ Chroma Engine is built in C and is contained in the [Chroma Engine](https://gith
 
 ### **Chroma Viz**
 
-Chroma Viz is the front end for Chroma Engine.
+Chroma Viz is a front end application for issuing commands to Chroma Engine.
 It provides a UI to view the templates contained in Chroma Hub.
-On startup, Chroma Viz requests the templates from Chroma Hub over a tcp socket.
+On startup, Chroma Viz requests the templates from Chroma Hub.
 Chroma Hub collects the template IDs of all templates in the hub and sends this list to Chroma Viz.
 
 <img src="/assets/chroma-graphics/templates.png" alt="Templates">
 
 Pages can be created from templates, by double clicking on the template in the Templates tab.
-Pages are independent of each other, while partially compatible with future updated templates.
-To create a page, Chroma Viz requests the template from Chroma Hub using tcp sockets.
-For example, if we wanted template 10, we would write
+Chroma Viz will then send a request to Chroma Hub for this template.
+Chroma Hub implements a REST API for accessing assets such as templates.
+Templates are encoded using json.
 
-$$ \texttt{ver 0 1 temp 10;} $$
-
-to the Chroma Hub socket.
-Templates are encoded using a json-like format, described in the Chroma Hub section.
-Pages form shows, which can be imported or exported to disk.
-Internally we use the `encoding/json` Golang package for simplicity to read and write a
-json format of the pages or shows to a file.
+Pages form shows, which can be saved to/loaded from disk for future use.
 
 <img src="/assets/chroma-graphics/show.png" alt="Templates">
 
-Chroma Viz can connect to any number of Chroma Engine instances over a tcp socket, with
-the connection having either Engine or Preview type.
-When the user opens a page to edit by double clicking on the page, or by saving changes
-made to the page with the save button, the page is sent to all connections with the preview type.
-By default Chroma Viz starts with a Chroma Engine instance as a preview window using the Preview type.
+Chroma Viz can connect to any number of Chroma Engine instances, using tcp sockets to communicate.
+Each connection is either a Engine or Preview connection.
+When the user opens a page to edit by double clicking on the page, or by saving changes made to the page with the save button, the page is sent to all connections with the preview type.
+By default, Chroma Viz starts a Chroma Engine instance, as a Preview connection, and embeds this instance in the bottom right window using XEmbed Protocol.
 The actions at the top of the editor panel, $ \texttt{Take On, Continue} $ and
 $ \texttt{Take Off} $, send pages to connected Chroma Engine instances with the Engine type.
 
@@ -66,18 +59,15 @@ hub to display the graphic.
 
 Chroma Engine renders graphics requests from Chroma Viz.
 Chroma Engine has two modes: engine and preview.
-In engine mode, Chroma Engine launches a standalone gtk window to render graphics.
+In engine mode, Chroma Engine launches a standalone GTK window to render graphics.
 This is a placeholder for what would be a process that communicates with a graphics card to output graphics.
-In preview mode, Chroma Engine recieves an xorg window id and uses gtk plugs to
-embed a window with Chroma Viz while still running as a standalone instance.
+In preview mode, Chroma Engine recieves an Xorg window id and uses GTK Plug to embed a window with Chroma Viz while still running as a standalone instance.
 This allows the operator to view graphics in a preview window within Chroma Viz.
 
 On startup, Chroma Engine connects to Chroma Hub and requests all templates in the Hub.
 This is done so Chroma Engine can build its own database containing each template that could be received from Chroma Viz.
-This has the added cost of needing to allocate resources for each template, but the benefit
-is we don't need to allocate memory at run time when we receive a graphics request.
-A middle ground between these two options would be allowing the user to load a subset of
-templates currently in use, and requesting any new templates on the fly from Chroma Hub as needed.
+This has the added cost of needing to allocate resources for each template, but the benefit is we don't need to allocate memory at run time when we receive a graphics request.
+A middle ground between these two options would be allowing the user to load a subset of templates currently in use, and requesting any new templates on the fly from Chroma Hub as needed.
 
 Chroma Engine renders graphics using OpenGL.
 To render a graphic, first Chroma Engine recieves a string of data from a Chroma Viz instance.
@@ -86,17 +76,19 @@ The string contains a header with the format version, layer, template id, and ac
 Then each geometry, specified by an integer, followed by a list of attributes for the geometry.
 As we parse the string, we set the values for each geometry of the target template.
 
+Chroma Engine features geometry masking.
+Each geometry has a masking attribute, and if set, for each pixel of the geometry we check if every parent geometry also has a pixel at this point.
+To achieve this we utilise OpenGL stencil buffers, keeping a buffer for each parent and then drawing the geometry where we can pass through all buffers.
+GTK restrictions mean we can only have 8 stencil buffers, restricting geometry tree depth to a maximum of 8.
+
 Image assets are also contained in Chroma Hub, so before we can render an image we request it from Chroma Hub.
 Chroma Hub first send 4 bytes with the length of the image, followed by the image as a raw PNG file.
 Then we store this data for later use, as well as decoding the png to extract the pixel data using libpng.
-In later render calls, if the image id matches the currently stored image id, we reuse
-this file instead of requesting the image again from Chroma Hub.
+In later render calls, if the image id matches the currently stored image id, we reuse this file instead of requesting the image again from Chroma Hub.
 
-After receiving the graphics request and any image assets, Chroma Engine calculates the absolute
-position of each geometry in the page using the parent tree and relative positions.
-Next the animations are calculated.
-Currently this is a simple black rectangle which is the same size as the background
-rectangle and is resized to create the animation effect.
+After receiving the graphics request and any image assets, Chroma Engine computes the keyframes for the template.
+This includes the absolute position calculations.
+The keyframe process is described in the Chroma Artist section.
 For smooth animations, we use a bezier curve to control the animation timing.
 Finally each geometry in the page is rendered to the screen using OpenGL.
 
@@ -109,52 +101,13 @@ Chroma Hub also stores any assets needed by the templates such as images, curren
 Chroma Hub wraps a SQL database, which currently needs to be setup with the schema in `hub/chroma_hub.sql`.
 Internally we use the `encoding/json` Golang package for simplicity to write and read a json format of the database to a file.
 
-Chroma Hub communicates with Chroma Engine and Chroma Viz instances over tcp socket connections.
-Chroma Artist uses Chroma Hub directly to updates templates in the current hub.
-Chroma Hub listens to port 9000 by default (or as specified) for connections and then responds to a command as needed.
-For example
-
-$$ \texttt{ver 0 1 tempid 5;} $$
-
-is a command using version 0.1 and requesting template 5.
-Chroma Viz and Chroma Engine can set the Chroma Hub address individually and connect on startup, reading and parsing the data sent by Chroma Hub.
-Chroma Hub encodes the templates using a json-like format, which is restricted to simplify implementation on the Chroma Engine/Chroma Viz side.
-The format is described by the following Context Free Grammar (see Quaternion Calculator for a description of CFGs).
-
-$$ \begin{align*}
-S &\to \{ \texttt{N, 'templates': [$T$]} \} \\
-T &\to \{ \texttt{N, 'geometry': [$G$]} \} \mid T, T \\
-G &\to \{ \texttt{N, 'attr': [$A$]} \} \mid G, G \\
-A &\to \{ \texttt{N} \} \mid A, A \\
-N &\to \texttt{'string1'}: \texttt{'string2'} \mid \texttt{'string1'}: \texttt{num} \mid N, N
-\end{align*}$$
-
-where $ \texttt{string1} $ and $ \texttt{string2} $ are strings and $ \texttt{num} $ is an integer or float.
-The non-terminals $ T, G, A $ represent a templates, geometries, and attributes respectively.
-The list of attributes for each non terminal is generated by the non terminal $ N $.
-Both Chroma Viz and Chroma Engine contain custom parsers for this grammar.
-
-On the Chroma Engine/Viz side we begin by tokenizing the string recieved.
-We have strings which begin with an ', integers and the special characters {, }, [, ], : and ,.
-While the grammar specified above is left-recursive and ambiguous, it is relatively simple to parse.
-Consider the following example production, which has the same form as $ T, G, A $ as above,
-
-$$ A \to \beta \mid A, A $$
-
-To eliminate left recursion and the amibiguity of this production, we replace this production with
-
-$$ A \to \beta, A \mid \beta $$
-
-This new production is unambiguous and not left recursive.
-For simplicity in specifying the grammar we use the former.
-Now the grammar is unambiguous and not left-recursive, we can use a type of recursive-descent parsing known as predictive parsing.
-In Chroma Engine, this parser is contained in `/src/parser/parser_recieve_hub.c`, in Chroma Viz it is contained in `/viz/parser.go`.
-
-Chroma Hub also contains a simple CLI interface for importing and exporting assets, archive and templates.
+Chroma Hub implements a REST API for updating/retrieving assets.
+Chroma Artist is currently the only application which makes POST requests, to import/update templates and assets.
+Chroma Artist/Viz and Engine using GET requests to retrieve assets.
 
 ### **Chroma Artist**
 
-Chroma Artist provides a front end to design and export templates which can be imported to Chroma Hub.
+Chroma Artist provides a front end to design templates which can be imported to Chroma Hub and used by Chroma Viz.
 The key difference between Chroma Viz and Chroma Artist is in Chroma Artist we are free to manipulate the geometry hierarchy of a template, and any attribute of a geometry.
 In the discussion of Chroma Engine, we omitted the discussion of relative coordinates.
 To enable easier manipulation of graphics, each geometry has a parent geometry.
@@ -200,17 +153,24 @@ We can make the rectangle width dynamic by adding the following dependencies, an
 
 ![keyframe](/assets/chroma-graphics/keyframe_expand.svg){: width="700"}
 
-Keyframing consists of a set of frames an index 1, 2, ... up to some fixed number $ n $.
-For each index, we create the table of attributes for each geometry show above.
-Then a keyframe is simply a way to add dependencies and evaluation functions to the graph.
-When animated, the values are interpolated linearly between the frames.
+The keyframing process in Chroma Artist consists of two objects, Frames and Keyframes.
+Frames have an index 1, 2, ... up to some fixed number $ n $, and contain a collection of keyframes.
+For each frame, we create the table of attributes for each geometry show above.
+A Keyframe is a way to add dependencies and evaluation functions to the graph.
+When animated, geometry attributes are interpolated linearly between the frames.
 Current types of keyframes are
 
 - Set Frame: Set the value of an attribute of a geometry in a specific keyframe. In the graph this updates the value of a node and doesn't add any dependencies.
 - User Frame: Similar to set frame, except the value from the template or page when the graphic is animated on is used. This adds an edge which points to the attribute values set by the user, and is the default for non keyframed attributes.
 - Bind Frame: Use a value computed in a keyframe. This adds an edge to another node in the graph, and the current node simply takes the value of the single child node.
 
+Additionally we can set a keyframe to be an expand keyframe, currently only supported for User Frame rectangles and attributes width or height.
+This is what we used above, we add an edge to the upper x position and upper y position for width and height respectively for each child geometry, and evaluates the maximum of all child nodes.
 The only restrictions on keyframes is they cannot create cycles in the graph.
 Doing so makes evaluating them ambiguous, so Chroma Engine terminates if it receives a template with a cycle in the keyframe graph.
+Putting these together we can create the following graphic.
 
-<img src="/assets/chroma-graphics/chroma-artist.png" alt="Chroma Artist">
+<video width="720" controls>
+    <source src="https://github.com/jchilds0/chroma-viz/raw/main/data/artist_demo.mp4">
+</video>
+
