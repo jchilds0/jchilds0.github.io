@@ -13,7 +13,6 @@ The aim of this project is to develop a collection of applications which can ren
 Inspiration is taken from the VizRT suite of applications.
 Currently this collection consists of Chroma Viz, Hub, Engine and Artist.
 Chroma Viz, Hub and Artist are built in Golang and are contained in the [Chroma Viz](https://github.com/jchilds0/chroma-viz) repository on Github.
-They share a common base library with a separate package for each application.
 Chroma Engine is built in C and is contained in the [Chroma Engine](https://github.com/jchilds0/chroma-engine) repository.
 
 <video width="720" controls>
@@ -22,8 +21,7 @@ Chroma Engine is built in C and is contained in the [Chroma Engine](https://gith
 
 ### **Chroma Viz**
 
-Chroma Viz is a front end application for issuing commands to Chroma Engine.
-It provides a UI to view the templates contained in Chroma Hub.
+Chroma Viz manages templates at a high level, and issues commands to Chroma Engine.
 On startup, Chroma Viz requests the templates from Chroma Hub.
 Chroma Hub collects the template IDs of all templates in the hub and sends this list to Chroma Viz.
 
@@ -32,8 +30,6 @@ Chroma Hub collects the template IDs of all templates in the hub and sends this 
 Pages can be created from templates, by double clicking on the template in the Templates tab.
 Chroma Viz will then send a request to Chroma Hub for this template.
 Chroma Hub implements a REST API for accessing assets such as templates.
-Templates are encoded using json.
-
 Pages form shows, which can be saved to/loaded from disk for future use.
 
 <img src="/assets/chroma-graphics/show.png" alt="Templates">
@@ -41,28 +37,26 @@ Pages form shows, which can be saved to/loaded from disk for future use.
 Chroma Viz can connect to any number of Chroma Engine instances, using tcp sockets to communicate.
 Each connection is either a Engine or Preview connection.
 When the user opens a page to edit by double clicking on the page, or by saving changes made to the page with the save button, the page is sent to all connections with the preview type.
-By default, Chroma Viz starts a Chroma Engine instance, as a Preview connection, and embeds this instance in the bottom right window using XEmbed Protocol.
+Chroma Engine provides a C library which can create a GtkGLRender widget, and using cgo, Chroma Viz creates a Chroma Engine preview window.
+Chroma Viz sends pages to layer 0 of the preview window, so pages switch as expected which changing between pages.
+
 The actions at the top of the editor panel, $ \texttt{Take On, Continue} $ and
 $ \texttt{Take Off} $, send pages to connected Chroma Engine instances with the Engine type.
 
-- Take On runs the keyframes until the first pause point
-- Continue runs keyframes from the last pause point to the next pause point.
-- Take Off runs keyframes from the final pause point until the end.
+- Take On animates from Keyframe 1 to Keyframe 2.
+- Continue runs from the current Keyframe to the next Keyframe.
+- Take Off runs from the second last Keyframe to the last Keyframe.
 
-Chroma Viz encodes the attributes changed by the user into a string and sends it to Chroma Engine.
-Chroma Engine parses this string and combines the data with the template from the graphics
-hub to display the graphic.
+Chroma Viz encodes the attributes of a page and sends it to Chroma Engine.
+Chroma Engine parses the message and updates the templates attributes before rendering the graphic.
 
 <img src="/assets/chroma-graphics/chroma-viz.png" alt="Chroma Viz">
 
 ### **Chroma Engine**
 
 Chroma Engine renders graphics requests from Chroma Viz.
-Chroma Engine has two modes: engine and preview.
-In engine mode, Chroma Engine launches a standalone GTK window to render graphics.
-This is a placeholder for what would be a process that communicates with a graphics card to output graphics.
-In preview mode, Chroma Engine recieves an Xorg window id and uses GTK Plug to embed a window with Chroma Viz while still running as a standalone instance.
-This allows the operator to view graphics in a preview window within Chroma Viz.
+At its core, Chroma Engine creates a GtkGLRender widget which renders graphics.
+We compile both a library, which is used by Chroma Viz to create a preview window, and a binary, which creates a standalone GTK application which only contains the GtkGLRender.
 
 On startup, Chroma Engine connects to Chroma Hub and requests all templates in the Hub.
 This is done so Chroma Engine can build its own database containing each template that could be received from Chroma Viz.
@@ -107,18 +101,12 @@ Chroma Artist/Viz and Engine using GET requests to retrieve assets.
 
 ### **Chroma Artist**
 
-Chroma Artist provides a front end to design templates which can be imported to Chroma Hub and used by Chroma Viz.
-The key difference between Chroma Viz and Chroma Artist is in Chroma Artist we are free to manipulate the geometry hierarchy of a template, and any attribute of a geometry.
+Chroma Artist provides a UI for designing templates which can be imported to Chroma Hub and used by Chroma Viz.
+The key difference between Chroma Viz and Chroma Artist is Chroma Artist is used to manipulate the geometry hierarchy of a template, and create Keyframes for the template.
 In the discussion of Chroma Engine, we omitted the discussion of relative coordinates.
 To enable easier manipulation of graphics, each geometry has a parent geometry.
-This gives the geometries a tree structure, and position of a geometry are relative to the position of the parent geometry.
+This gives the geometries a tree structure, and position of a geometry is relative to the position of the parent geometry.
 Chroma Artist gives an easy interface to specify this tree structure, which Chroma Engine rebuilds to calculate the absolute positions.
-
-Chroma Artist shows all attributes of a geometry to the designer.
-The designer is then free to set these values.
-They can also set which attributes will be visible when the template is imported into Chroma Viz.
-By default all values set in Chroma Artist are stored with the template.
-Once loaded into Chroma Hub, these values will be sent to Chroma Engine and stored as the defaults, as well as shown by default in Chroma Viz.
 
 An example of this functionality is a simple lower frame super, which contains a rectangle for the background, two text geometries parented to the rectangle, and a circle as a logo placeholder also parented to the rectangle.
 The designer could set the default position, width and height of the background rectangle, aswell as the position of the text.
