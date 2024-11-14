@@ -123,13 +123,25 @@ This will be extended to construct keyframes.
 
 Consider the following table which represents some attributes of the graphic we described above,
 
-![keyframe](/assets/chroma-graphics/keyframe_img.svg){: width="700"}
+[//]: <> (![keyframe](/assets/chroma-graphics/keyframe_img.svg){: width="700"})
+
+{% if site.style == 'dark' %}
+    <img src="{{ '/assets/chroma-graphics/keyframe_img_dark.svg' | relative_url }}"/>
+{% elsif site.style == 'light' %}
+    <img src="{{ '/assets/chroma-graphics/keyframe_img.svg' | relative_url }}"/>
+{% endif %}
 
 The x position of geometry 4 depends on the x position of geometry 1 (it's parent) and its own relative x position.
 We indicate this dependency with an arrow from the x position of geometry 4 to the x position of geometry 1 and the relative x position of geometry 4.
 Continuing for all geometries we form the following graph, which is a directed acyclic graph.
 
-![keyframe](/assets/chroma-graphics/keyframe_start.svg){: width="700"}
+[//]: <> (![keyframe](/assets/chroma-graphics/keyframe_start.svg){: width="700"})
+
+{% if site.style == 'dark' %}
+    <img src="{{ '/assets/chroma-graphics/keyframe_start_dark.svg' | relative_url }}"/>
+{% elsif site.style == 'light' %}
+    <img src="{{ '/assets/chroma-graphics/keyframe_start.svg' | relative_url }}"/>
+{% endif %}
 
 At each node of this graph, we want to compute the value of the node by combining the values of the dependencies in some way.
 To do this we store a function at each node, in the case of relative positions this function evaluates the sum of the value for each child node of the current node.
@@ -139,7 +151,13 @@ This excellent video by William Fiset describes topological sorting of directed 
 
 We can make the rectangle width dynamic by adding the following dependencies, and adding a function to the rectangle node which evaluates the maximum of the value of each child node.
 
-![keyframe](/assets/chroma-graphics/keyframe_expand.svg){: width="700"}
+[//]: <> (![keyframe](/assets/chroma-graphics/keyframe_expand.svg){: width="700"})
+
+{% if site.style == 'dark' %}
+    <img src="{{ '/assets/chroma-graphics/keyframe_expand_dark.svg' | relative_url }}"/>
+{% elsif site.style == 'light' %}
+    <img src="{{ '/assets/chroma-graphics/keyframe_expand.svg' | relative_url }}"/>
+{% endif %}
 
 The keyframing process in Chroma Artist consists of two objects, Frames and Keyframes.
 Frames have an index 1, 2, ... up to some fixed number $ n $, and contain a collection of keyframes.
