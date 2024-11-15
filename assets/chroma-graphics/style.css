@@ -1,0 +1,10 @@
+.theme-image {
+}
+
+body.light-mode .theme-image.light {
+  display: block; /* Show light image in light mode */
+}
+
+body.dark-mode .theme-image.dark {
+  display: block; /* Show dark image in dark mode */
+}
