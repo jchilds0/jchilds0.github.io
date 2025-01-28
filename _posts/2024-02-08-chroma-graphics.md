@@ -52,10 +52,39 @@ Chroma Engine parses the message and updates the templates attributes before ren
 
 <img src="/assets/chroma-graphics/chroma-viz.png" alt="Chroma Viz">
 
+Chroma Viz also implements a feature that provides similar functionality to the Media Sequencer Engine in Viz Trio.
+A Chroma Viz instance can act as a server, allowing other Chroma Viz instances to communicate with the server and share pages.
+The server can set the following config options,
+
+```json
+{
+    "MediaSequencer": true,
+    "MediaSequencerPort": 9000,
+}
+```
+
+which will start a media sequencer on the Chroma Viz instance that listens on port 9000. Any other Chroma Viz instance can be launched with the following config options,
+
+
+```json
+{
+    "MediaSequencerIP": localhost,
+    "MediaSequencerPort": 9000,
+}
+```
+
+which connects the media sequence of the Chroma Viz instance to the media sequencer at `localhost:9000`.
+This can be a Chroma Viz instance on the current machine, or another machine on the local network
+
+The Chroma Viz instance running the media sequencer acts as a publisher/subscriber server.
+When clients perform actions on the show, such as creating pages, or editing pages, the changes are sent to the server instance.
+The server adds the changes to their show, and pushes an update out to all connected Chroma Viz instances.
+Chroma Viz instances listen for messages from the server, updating their local show as they receive changes.
+
 ### **Chroma Engine**
 
 Chroma Engine renders graphics requests from Chroma Viz.
-At its core, Chroma Engine creates a GtkGLRender widget which renders graphics.
+At its core, Chroma Engine creates a GtkGLRender widget and renders graphics to the GL framebuffer.
 We compile both a library, which is used by Chroma Viz to create a preview window, and a binary, which creates a standalone GTK application which only contains the GtkGLRender.
 
 On startup, Chroma Engine connects to Chroma Hub and requests all templates in the Hub.
