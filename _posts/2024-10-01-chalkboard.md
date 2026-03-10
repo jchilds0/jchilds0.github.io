@@ -12,9 +12,14 @@ comments: false
 Chalkboard is a peer-to-peer, distributed whiteboard.
 Users can create and discover rooms, each with their own whiteboard.
 
-![Chalkboard](/assets/chalkboard/example.png)
+![Chalkboard](/assets/chalkboard/chalkboard.png)
 
 Source is available at [Chalkboard](https://github.com/jchilds0/chalkboard).
+
+<video width="720" controls>
+    <source src="https://github.com/jchilds0/chalkboard/raw/main/assets/chalkboard.mp4">
+</video>
+
 
 ### **Implementation**
 
